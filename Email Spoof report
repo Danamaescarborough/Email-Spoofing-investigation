@@ -1,0 +1,200 @@
+# Email Spoofing Investigation
+
+## Overview
+
+This project documents the investigation of a spoofed email that falsely appeared to originate from the recipient's Hotmail account. The objective was to determine whether the account had been compromised, identify the true sending infrastructure, analyze email authentication mechanisms, and document indicators of compromise discovered during the investigation.
+
+---
+
+## Objectives
+
+* Verify sender authenticity
+* Determine whether account compromise occurred
+* Identify the originating infrastructure
+* Analyze email authentication results
+* Extract indicators of compromise
+* Document findings and investigative methodology
+
+---
+
+## Initial Assessment
+
+The email appeared to originate from the recipient's personal Hotmail account and contained threatening language intended to pressure the recipient into sending cryptocurrency.
+
+Initial observations included:
+
+* Sender displayed as the recipient's own email address
+* Cryptocurrency payment demand
+* No evidence of account compromise provided
+* No screenshots, credentials, or supporting proof included
+* Message characteristics consistent with a spoofed email campaign
+
+Initial hypothesis:
+
+The sender address was likely forged to create the appearance that the message originated from the recipient's own account.
+
+---
+
+## Evidence Collection
+
+The following artifacts were collected for analysis:
+
+* Full SMTP message headers
+* Return-Path information
+* Authentication results
+* Received headers
+* Message-ID
+* Sending domain information
+* Source IP address
+
+---
+
+## Sender Analysis
+
+### Displayed Sender
+
+```text
+From: victim@example.com
+```
+
+### Actual Return-Path
+
+```text
+Return-Path: im_semaj1983@sia.ailem.app
+```
+
+### Findings
+
+The displayed sender address did not match the Return-Path contained within the SMTP headers.
+
+This indicates that the visible sender address was spoofed and did not represent the actual sending account.
+
+---
+
+## Authentication Analysis
+
+### Authentication Results
+
+```text
+SPF: none
+DKIM: none
+DMARC: fail
+CompAuth: fail
+```
+
+### Findings
+
+The message failed all major email authentication mechanisms.
+
+* SPF did not authorize the sending infrastructure
+* DKIM signatures were not present
+* DMARC validation failed
+* Composite authentication failed
+
+These results indicate that the sender was not authorized to send email on behalf of the displayed address.
+
+---
+
+## Infrastructure Analysis
+
+### Source IP Address
+
+```text
+186.121.249.74
+```
+
+### Source Hostname
+
+```text
+static-186-121-249-74.acelerate.net
+```
+
+### Sending Domain
+
+```text
+sia.ailem.app
+```
+
+### Message-ID
+
+```text
+<6e74821e-239b6.1df34@static-186-121-249-74.acelerate.net>
+```
+
+### Findings
+
+SMTP header analysis identified the originating connection as:
+
+* IP Address: 186.121.249.74
+* Hostname: static-186-121-249-74.acelerate.net
+* Return-Path Domain: sia.ailem.app
+
+The Message-ID domain matched the sending infrastructure identified within the Received headers, strengthening attribution to the sending system.
+
+Analysis determined that the message originated from infrastructure unrelated to Microsoft's Hotmail service.
+
+---
+
+## Indicators of Compromise
+
+| Type                   | Value                                                           |
+| ---------------------- | --------------------------------------------------------------- |
+| Source IP              | 186.121.249.74                                                  |
+| Hostname               | static-186-121-249-74.acelerate.net                             |
+| Domain                 | sia.ailem.app                                                   |
+| Return-Path            | [im_semaj1983@sia.ailem.app](mailto:im_semaj1983@sia.ailem.app) |
+| Authentication Status  | SPF None / DKIM None / DMARC Fail                               |
+| Message Classification | Email Spoofing Campaign                                         |
+
+---
+
+## Threat Intelligence Reporting
+
+Indicators extracted during the investigation were reported to Chainabuse for correlation with other reports and fraud tracking efforts.
+
+Information reported included:
+
+* Cryptocurrency wallet information contained within the message
+* Sending infrastructure indicators
+* Associated domain information
+* Supporting screenshots and documentation
+
+---
+
+## Conclusion
+
+Analysis of the SMTP headers determined that:
+
+* The email did not originate from the recipient's Hotmail account
+* The displayed sender address was spoofed
+* Multiple email authentication mechanisms failed
+* The message originated from external infrastructure associated with the domain sia.ailem.app
+* No evidence of Hotmail account compromise was identified
+
+The investigation successfully identified the sending infrastructure, extracted indicators of compromise, and documented the methodology used to validate the authenticity of the message.
+
+---
+
+## Skills Demonstrated
+
+* Email Header Analysis
+* SMTP Investigation
+* SPF Analysis
+* DKIM Analysis
+* DMARC Analysis
+* Threat Intelligence
+* Indicator of Compromise (IOC) Extraction
+* Email Security Analysis
+* Incident Documentation
+* Cybersecurity Research
+* Open Source Intelligence (OSINT)
+
+---
+
+## Tools Used
+
+* Microsoft Outlook
+* SMTP Header Analysis
+* Chainabuse
+* Manual Log Analysis
+* Open Source Intelligence Techniques
